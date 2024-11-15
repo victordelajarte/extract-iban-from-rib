@@ -5,7 +5,7 @@ import { renderPageAsImage } from "unpdf";
 
 const server = fastify().register(multipart);
 
-const SAVE_IMAGE = true;
+const SAVE_IMAGE = false;
 
 server.post("/convert", async (request, response) => {
     try {
@@ -40,7 +40,11 @@ server.post("/convert", async (request, response) => {
     }
 });
 
-server.listen({ port: 5000 }, (err, address) => {
+server.get("/", async (_request, _response) => {
+    return { message: "Hello, world!" };
+})
+
+server.listen({ port: 8081, host: '0.0.0.0' }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);
