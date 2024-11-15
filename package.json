@@ -15,6 +15,7 @@
   "name": "@asap/pdf-to-png",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "dev": "(docker stop pdf-to-png && docker rm pdf-to-png) || echo 'nothing' && docker build -t pdf-to-png . && docker run -d -p 8081:8081 --name pdf-to-png pdf-to-png",
     "start": "node index.js"
   },
   "version": "0.0.1"
