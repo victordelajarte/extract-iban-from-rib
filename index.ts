@@ -1,8 +1,11 @@
 import multipart from "@fastify/multipart";
 import fastify from "fastify";
+import { writeFile } from "fs/promises";
 import { renderPageAsImage } from "unpdf";
 
 const server = fastify().register(multipart);
+
+const SAVE_IMAGE = true;
 
 server.post("/convert", async (request, response) => {
     try {
@@ -17,17 +20,19 @@ server.post("/convert", async (request, response) => {
         for await (const chunk of parts.file) {
             chunks.push(chunk);
         }
-        console.log("Got chunks", chunks.length);
 
         const pdfBuffer = Buffer.concat(chunks);
         const image = await renderPageAsImage(new Uint8Array(pdfBuffer), 1, {
             canvas: () => import("canvas"),
             width: 2480, // Width of an A4 paper in pixels, we get better quality with higher resolution
-
         });
         const imageBuffer = Buffer.from(image);
-        response.header("Content-Type", "image/png");
 
+        if (SAVE_IMAGE) {
+            await writeFile("output/image.png", imageBuffer);
+        }
+
+        response.header("Content-Type", "image/png");
         response.send(imageBuffer);
     } catch (error) {
         console.error({ error });
