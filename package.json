@@ -1,22 +1,24 @@
 {
   "author": "",
   "dependencies": {
-    "@fastify/multipart": "9.0.1",
+    "@fastify/multipart": "9.0.3",
     "canvas": "2.11.2",
     "fastify": "5.1.0",
-    "unpdf": "0.11.0"
+    "sharp": "0.33.5",
+    "tesseract.js": "6.0.0",
+    "unpdf": "0.12.1"
   },
   "description": "",
   "devDependencies": {
-    "@types/node": "22.9.0",
-    "typescript": "5.6.3"
+    "@types/node": "22.10.10",
+    "typescript": "5.7.3"
   },
   "license": "ISC",
-  "name": "@asap/pdf-to-png",
+  "name": "extract-iban-from-rib",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "(docker stop pdf-to-png && docker rm pdf-to-png) || echo 'nothing' && docker build -t pdf-to-png . && docker run -d -p 8081:8081 --name pdf-to-png pdf-to-png",
-    "start": "node index.js"
+    "dev": "(docker stop extract-iban-from-rib && docker rm extract-iban-from-rib) || echo 'nothing' && docker build -f Dockerfile -t extract-iban-from-rib . && docker run -d -p 8081:8081 --name extract-iban-from-rib extract-iban-from-rib",
+    "start": "node dist/index.js"
   },
   "version": "0.0.1"
 }

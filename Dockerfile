@@ -1,15 +1,17 @@
-FROM node:20.18.0-alpine AS initial
+FROM node:22.13.1-alpine3.21 AS initial
 
 WORKDIR /app
+
+RUN apk update && apk upgrade
 
 # Install dependencies using apk for Alpine
 RUN apk add --no-cache \
     build-base=0.5-r3 \
-    cairo-dev=1.18.0-r0 \
-    pango-dev=1.52.2-r0 \
-    jpeg-dev=9e-r1 \
+    cairo-dev=1.18.2-r1 \
+    pango-dev=1.54.0-r1 \
+    jpeg-dev=9f-r0 \
     giflib-dev=5.2.2-r0 \
-    librsvg-dev=2.58.5-r0
+    librsvg-dev=2.59.2-r0
 
 FROM initial AS build
 
@@ -28,7 +30,7 @@ WORKDIR /app
 # Create a non-root user and group
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-COPY --from=build /app/index.js /app/index.js
+COPY --from=build /app/dist /app/dist
 COPY --from=build /app/package.json /app/package.json
 COPY --from=build /app/package-lock.json /app/package-lock.json
 
